@@ -1,6 +1,7 @@
 package com.example.demo.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -16,7 +17,15 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private Validator validator;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    public UserModle findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 
+    public UserModle findUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
     public Integer addUser(UserModle user) {
         Set<ConstraintViolation<UserModle>> violations = validator.validate(user);
         if (!violations.isEmpty()) {
@@ -26,6 +35,7 @@ public class UserService {
             }
             throw new ConstraintViolationException(sb.toString(), violations);
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         UserModle newUser = userRepository.save(user);
         return newUser.getId();
     }
