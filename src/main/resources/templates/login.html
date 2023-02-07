@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/login" method="post">
+    <input type="text" id="username" name="username" placeholder="Username">
+    <input type="password" id="password" name="password" placeholder="Password">
+    <div th:if="${param.error}">
+        <div>帳號或密碼錯誤</div>
+    </div>
+    <button type="submit" class="btn btn-primary">登入</button>
+</form>
+</body>
+</html>

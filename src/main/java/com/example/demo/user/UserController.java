@@ -18,6 +18,9 @@ public class UserController {
     private UserService userService;
     @GetMapping("/register")
     public String viewRegisterPage(Model model) {
+        if (userService.isLogin()) {
+            return "redirect:/";
+        }
         model.addAttribute("name", "註冊");
         model.addAttribute("user", new UserModle());
         return "register";
@@ -31,6 +34,13 @@ public class UserController {
         }
         userService.addUser(user);
         return "redirect:/hello";
+    }
+    @GetMapping("/login")
+    public String viewLoginPage() {
+        if (userService.isLogin()) {
+            return "redirect:/";
+        }
+        return "login";
     }
 }
 

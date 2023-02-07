@@ -1,6 +1,9 @@
 package com.example.demo.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -38,5 +41,13 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         UserModle newUser = userRepository.save(user);
         return newUser.getId();
+    }
+
+    public boolean isLogin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return !(authentication == null || authentication instanceof AnonymousAuthenticationToken);
+    }
+    public String getUsername() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }
